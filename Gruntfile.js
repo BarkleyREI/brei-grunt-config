@@ -1,11 +1,14 @@
+var brei = require('./brei-config.json');
+var yosay = require('yosay');
+
 var options = {
-	config : {
+	config: {
 		src: 'grunt-config/*.js'
 	},
 	yeoman: {
 		app: 'app',
 		dist: 'dist',
-		deploy: '<%= deployDirectory %>'
+		deploy: brei.deploy
 	}
 };
 
@@ -15,7 +18,7 @@ var options = {
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 	'use strict';
 
 	var configs = require('load-grunt-configs')(grunt, options);
@@ -36,7 +39,7 @@ module.exports = function (grunt) {
 
 	grunt.initConfig(configs);
 
-	grunt.registerTask('server', function (target) {
+	grunt.registerTask('server', function(target) {
 		if (target === 'dist') {
 			return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
 		}
@@ -84,7 +87,7 @@ module.exports = function (grunt) {
 		'build'
 	]);
 
-	grunt.registerTask('execute-sync', function (s) {
+	grunt.registerTask('execute-sync', function(s) {
 		var done = this.async();
 
 		grunt.task.run('execute:target');
@@ -92,60 +95,53 @@ module.exports = function (grunt) {
 		done();
 	});
 
-	grunt.registerTask('debug', function (s) {
+	grunt.registerTask('debug', function(s) {
+		var done = this.async();
 
-        var done = this.async();
+		nconf.file({
+			file: './brei-config.json'
+		});
+		nconf.load();
 
-        nconf.file({ file: './brei-config.json' });
-        nconf.load();
+		if (s === 'on') {
+			nconf.set('debug', 'true');
+			nconf.save(function(err) {
+				if (err) {
+					console.error(err.message);
+					done();
+					return;
+				}
+				console.log(yosay('Debug mode activated!'));
+				done();
+			});
 
-        if (s === 'on') {
-            nconf.set('debug', 'true');
-            nconf.save(function (err) {
-                fs.readFile('./brei-config.json', function (err, data) {
-                    console.dir(JSON.parse(data.toString()));
-                });
-                if (err) {
-                    console.log('error! ' + err.message);
-                    console.error(err.message);
-                    done();
-                    return;
-                }
-                console.log('1 Configuration saved successfully.');
-                done();
-            });
-        } else {
-            var debug = nconf.get('settings:debug');
+		} else {
+			var debug = nconf.get('debug');
 
-            if (typeof debug !== 'undefined' && debug !== '') {
-                console.log('debug found! it is ' + debug);
-                if (debug === 'true') {
-                    debug = 'false';
-                } else {
-                    debug = 'true';
-                }
-                console.log('i changed it to ' + debug);
-            } else {
-                console.log('debug setting not found');
-                debug = 'false';
-            }
-            nconf.set('debug', debug);
-            console.log('debug set to ' + debug);
-            nconf.save(function (err) {
-                fs.readFile('./brei-config.json', function (err, data) {
-                    console.dir(JSON.parse(data.toString()));
-                });
-                if (err) {
-                    console.log('error! ' + err.message);
-                    console.error(err.message);
-                    done();
-                    return;
-                }
-                console.log('2 Configuration saved successfully.');
-                done();
-            });
-        }
-
-    });
-
+			if (typeof debug !== 'undefined' && debug !== '') {
+				if (debug === 'true') {
+					debug = 'false';
+				} else {
+					debug = 'true';
+				}
+			} else {
+				debug = 'false';
+			}
+			nconf.set('debug', debug);
+			nconf.save(function(err) {
+				if (err) {
+					console.log('error! ' + err.message);
+					console.error(err.message);
+					done();
+					return;
+				}
+				if (debug) {
+					console.log(yosay('Debug mode activated!'));
+				} else {
+					console.log(yosay('Debug mode deactivated!'));
+				}
+				done();
+			});
+		}
+	});
 };
