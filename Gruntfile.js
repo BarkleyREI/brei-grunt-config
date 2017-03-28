@@ -22,7 +22,6 @@ module.exports = function(grunt) {
 	'use strict';
 
 	var configs = require('load-grunt-configs')(grunt, options);
-	var fs = require('fs');
 	var nconf = require('nconf');
 
 	// build a custom version of modernizr
