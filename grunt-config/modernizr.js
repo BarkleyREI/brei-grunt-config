@@ -10,7 +10,6 @@ module.exports = function(grunt, options){
 			tests: [],
 			excludeTests: [
 				'hidden',
-				'video',
 				'flash',
 				'svg'
 			],
