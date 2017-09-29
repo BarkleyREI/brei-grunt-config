@@ -15,7 +15,8 @@ module.exports = function(grunt, options){
 			relativeAssets: false,
 			outputStyle: 'expanded',
 			debugInfo: false,
-			quiet: true
+			quiet: true,
+			sourcemap: true
 		},
 		dist: {
 			options: {
