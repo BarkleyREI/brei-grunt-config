@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+- 5.12.0
+- 6.10.1
+- 7.8.0
+deploy:
+  provider: npm
+  email: nessthehero@gmail.com
+  api_key:
+    secure: TxoUA5bTeBSaGhyffXmljviQllY/KGO8EsegEP1zS3A4y+eu3V5jwITS+cMWd9NvfJypjJRlNXbjOnxnOP4eZd6g2Mt9tccRwbEMq2F9xLdP29mX7/eXjKuevsAXt9AfXNx9IOEytPjLKKeQqCOnA0bhnlA3PdpXwiJsMrFS9nk=
+  on:
+    tags: true
+    repo: BarkleyREI/brei-grunt-config
