@@ -1,6 +1,6 @@
 {
 	"name": "brei-grunt-config",
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"description": "BarkleyREI abstracted grunt tasks",
 	"main": "Gruntfile.js",
 	"scripts": {
@@ -24,14 +24,6 @@
 		{
 			"name": "Joseph Dillon",
 			"url": "https://github.com/jdillon522"
-		},
-		{
-			"name": "Sean Stacho",
-			"url": "https://github.com/Sean-BREI"
-		},
-		{
-			"name": "Sarah Harissis",
-			"url": "https://github.com/sharissis"
 		}
 	],
 	"license": "MIT",
